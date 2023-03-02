@@ -1,7 +1,7 @@
-package com.mjc.school.impl;
+package com.mjc.school.repository.impl;
 
-import com.mjc.school.BaseRepository;
-import com.mjc.school.model.NewsModel;
+import com.mjc.school.repository.BaseRepository;
+import com.mjc.school.repository.model.NewsModel;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional(readOnly = true)
 public class NewsRepository implements BaseRepository<NewsModel, Long> {
 
     @PersistenceContext
@@ -36,11 +37,16 @@ public class NewsRepository implements BaseRepository<NewsModel, Long> {
     @Transactional
     @Override
     public NewsModel update(NewsModel entity) {
-        if (existById(entity.getId())) {
-            em.merge(entity);
-            return entity;
+        if (!existById(entity.getId())) {
+            return null;
         }
-        return null;
+        NewsModel model = em.getReference(NewsModel.class, entity.getId());
+        model.setContent(entity.getContent());
+        model.setTitle(entity.getTitle());
+        model.setAuthor(entity.getAuthor());
+        model.setTags(entity.getTags());
+        em.flush();
+        return model;
     }
 
     @Transactional

@@ -1,15 +1,15 @@
-package com.mjc.school.model;
+package com.mjc.school.repository.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -17,6 +17,8 @@ import java.util.Set;
 @Setter
 @Getter
 @Table(name = "news")
+@EqualsAndHashCode(callSuper = true)
+@EntityListeners(value = AuditingEntityListener.class)
 public class NewsModel extends BaseEntity{
 
     private String title;
@@ -26,12 +28,10 @@ public class NewsModel extends BaseEntity{
     @LastModifiedDate
     private LocalDateTime lastUpdateDate;
 
-    private Long authorId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private AuthorModel author;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    /*@JoinTable(
-            name="news_tags",
-            joinColumns = @JoinColumn(name = "news_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))*/
-    private Set<TagModel> tags;
+    private List<TagModel> tags;
 }

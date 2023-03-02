@@ -1,7 +1,7 @@
-package com.mjc.school.impl;
+package com.mjc.school.repository.impl;
 
-import com.mjc.school.BaseRepository;
-import com.mjc.school.model.AuthorModel;
+import com.mjc.school.repository.BaseRepository;
+import com.mjc.school.repository.model.TagModel;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,33 +11,32 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AuthorRepository implements BaseRepository<AuthorModel, Long> {
+@Transactional(readOnly = true)
+public class TagRepository implements BaseRepository<TagModel, Long> {
 
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
-    public List<AuthorModel> readAll() {
-        return em.createQuery("SELECT a FROM AuthorModel a", AuthorModel.class).getResultList();
+    public List<TagModel> readAll() {
+        return em.createQuery("select t from TagModel t", TagModel.class).getResultList();
     }
 
     @Override
-    public Optional<AuthorModel> readById(Long id) {
-        AuthorModel authorModel = em.find(AuthorModel.class, id);
-        return Optional.ofNullable(authorModel);
+    public Optional<TagModel> readById(Long id) {
+        return Optional.ofNullable(em.find(TagModel.class, id));
     }
 
-    @Override
     @Transactional
-    public AuthorModel create(AuthorModel entity) {
+    @Override
+    public TagModel create(TagModel entity) {
         em.persist(entity);
         return entity;
     }
 
-    @Override
     @Transactional
-    public AuthorModel update(AuthorModel entity) {
+    @Override
+    public TagModel update(TagModel entity) {
         if (existById(entity.getId())) {
             em.merge(entity);
             return entity;
@@ -45,16 +44,16 @@ public class AuthorRepository implements BaseRepository<AuthorModel, Long> {
         return null;
     }
 
-    @Override
     @Transactional
+    @Override
     public boolean deleteById(Long id) {
-        return em.createQuery("delete from AuthorModel a where a.id=:id")
+        return em.createQuery("delete from TagModel t where t.id=:id")
                 .setParameter("id", id)
                 .executeUpdate() != 0;
     }
 
     @Override
     public boolean existById(Long id) {
-        return em.find(AuthorModel.class, id) != null;
+        return em.find(TagModel.class, id) != null;
     }
 }
