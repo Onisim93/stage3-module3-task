@@ -2,6 +2,7 @@ package com.mjc.school.service.impl;
 
 import com.mjc.school.repository.BaseRepository;
 import com.mjc.school.repository.model.NewsModel;
+import com.mjc.school.service.AuthorService;
 import com.mjc.school.service.BaseService;
 import com.mjc.school.service.aspect.annotation.EntityValidate;
 import com.mjc.school.service.dto.AuthorDto;
@@ -15,12 +16,12 @@ import java.util.List;
 import static com.mjc.school.service.mapper.AuthorMapper.INSTANCE;
 
 @Service
-public class AuthorService implements BaseService<AuthorDto, Long> {
+public class AuthorServiceImpl implements AuthorService {
 
     private final BaseRepository<AuthorModel, Long> repository;
     private final BaseRepository<NewsModel, Long> newsRepository;
 
-    public AuthorService(BaseRepository<AuthorModel, Long> repository, BaseRepository<NewsModel, Long> newsRepository) {
+    public AuthorServiceImpl(BaseRepository<AuthorModel, Long> repository, BaseRepository<NewsModel, Long> newsRepository) {
         this.repository = repository;
         this.newsRepository = newsRepository;
     }
@@ -37,6 +38,7 @@ public class AuthorService implements BaseService<AuthorDto, Long> {
         return INSTANCE.toDto(model);
     }
 
+    @Override
     public AuthorDto readByNewsId(Long newsId) {
         NewsModel newsModel = newsRepository.readById(newsId)
                 .orElseThrow(()->new NoSuchEntityException(String.format(ServiceErrorCode.NEWS_ID_DOES_NOT_EXIST.getMessage(), newsId)));

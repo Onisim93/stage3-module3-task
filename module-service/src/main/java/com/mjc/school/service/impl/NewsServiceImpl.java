@@ -3,6 +3,7 @@ package com.mjc.school.service.impl;
 import com.mjc.school.repository.BaseRepository;
 import com.mjc.school.repository.model.TagModel;
 import com.mjc.school.service.BaseService;
+import com.mjc.school.service.NewsService;
 import com.mjc.school.service.aspect.annotation.EntityValidate;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.dto.TagDto;
@@ -18,13 +19,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class NewsService implements BaseService<NewsDto, Long> {
+public class NewsServiceImpl implements NewsService {
 
     private final BaseRepository<NewsModel, Long> repository;
     private final BaseRepository<TagModel, Long> tagRepository;
 
     @Autowired
-    public NewsService(BaseRepository<NewsModel, Long> repository, BaseRepository<TagModel, Long> tagRepository) {
+    public NewsServiceImpl(BaseRepository<NewsModel, Long> repository, BaseRepository<TagModel, Long> tagRepository) {
         this.repository = repository;
         this.tagRepository = tagRepository;
     }
@@ -34,6 +35,7 @@ public class NewsService implements BaseService<NewsDto, Long> {
         return NewsMapper.INSTANCE.toListDto(repository.readAll());
     }
 
+    @Override
     public List<NewsDto> readAllByParameters(List<String> tagNames, List<Long> tagIds, String authorName, String title, String content) {
         List<NewsModel> news = repository.readAll();
 

@@ -3,6 +3,7 @@ package com.mjc.school.service.impl;
 import com.mjc.school.repository.BaseRepository;
 import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.BaseService;
+import com.mjc.school.service.TagService;
 import com.mjc.school.service.aspect.annotation.EntityValidate;
 import com.mjc.school.service.dto.TagDto;
 import com.mjc.school.repository.model.TagModel;
@@ -14,12 +15,12 @@ import java.util.List;
 import static com.mjc.school.service.mapper.TagMapper.INSTANCE;
 
 @Service
-public class TagService implements BaseService<TagDto, Long> {
+public class TagServiceImpl implements TagService {
 
     private final BaseRepository<TagModel, Long> repository;
     private final BaseRepository<NewsModel, Long> newsRepository;
 
-    public TagService(BaseRepository<TagModel, Long> repository, BaseRepository<NewsModel, Long> newsRepository) {
+    public TagServiceImpl(BaseRepository<TagModel, Long> repository, BaseRepository<NewsModel, Long> newsRepository) {
         this.repository = repository;
         this.newsRepository = newsRepository;
     }
@@ -29,6 +30,7 @@ public class TagService implements BaseService<TagDto, Long> {
         return INSTANCE.toListDto(repository.readAll());
     }
 
+    @Override
     public List<TagDto> readAllByNewsId(Long newsId) {
         NewsModel model = newsRepository.readById(newsId)
                 .orElseThrow(()->new NoSuchEntityException(String.format(ServiceErrorCode.NEWS_ID_DOES_NOT_EXIST.getMessage(), newsId)));

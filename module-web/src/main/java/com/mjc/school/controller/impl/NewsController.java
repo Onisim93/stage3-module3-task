@@ -2,8 +2,9 @@ package com.mjc.school.controller.impl;
 
 import com.mjc.school.controller.BaseController;
 import com.mjc.school.service.BaseService;
+import com.mjc.school.service.NewsService;
 import com.mjc.school.service.dto.NewsDto;
-import com.mjc.school.service.impl.NewsService;
+import com.mjc.school.service.impl.NewsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -12,10 +13,10 @@ import java.util.List;
 @Controller
 public class NewsController implements BaseController<NewsDto, Long> {
 
-    private final BaseService<NewsDto, Long> service;
+    private final NewsService service;
 
     @Autowired
-    public NewsController(BaseService<NewsDto, Long> service) {
+    public NewsController(NewsService service) {
         this.service = service;
     }
 
@@ -25,7 +26,7 @@ public class NewsController implements BaseController<NewsDto, Long> {
     }
 
     public List<NewsDto> readAllByParameters(List<String> tagNames, List<Long> tagIds, String authorName, String title, String content) {
-        return ((NewsService)service).readAllByParameters(tagNames, tagIds, authorName, title, content);
+        return service.readAllByParameters(tagNames, tagIds, authorName, title, content);
     }
 
     @Override
