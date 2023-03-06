@@ -17,4 +17,9 @@ public class TagDto extends BaseDto{
     public TagDto(String name) {
         this.name = name;
     }
+
+    public TagDto(Long id, String name) {
+        super(id);
+        this.name = name;
+    }
 }

@@ -18,4 +18,9 @@ public class AuthorDto extends BaseDto{
     public AuthorDto(String name) {
         this.name = name;
     }
+
+    public AuthorDto(Long id, String name) {
+        super(id);
+        this.name = name;
+    }
 }

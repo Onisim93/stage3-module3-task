@@ -1,5 +1,6 @@
 package com.mjc.school.service.mapper;
 
+import com.mjc.school.repository.model.TagModel;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.repository.model.AuthorModel;
 import com.mjc.school.repository.model.NewsModel;
@@ -7,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = TagMapper.class)
 public interface NewsMapper {
@@ -20,6 +22,7 @@ public interface NewsMapper {
         newsModel.setContent(newsDto.getContent());
         newsModel.setTags(TagMapper.INSTANCE.toListModel(newsDto.getTagList()));
         newsModel.setTitle(newsDto.getTitle());
+        newsModel.setTags(newsDto.getTagIds().stream().map(TagModel::new).collect(Collectors.toList()));
 
         return newsModel;
     }

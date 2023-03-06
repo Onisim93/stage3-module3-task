@@ -20,6 +20,5 @@ public interface TagMapper {
 
     List<TagDto> toListDto (List<TagModel> tagModelList);
 
-
     List<TagModel> toListModel(List<TagDto> tagDtoList);
 }

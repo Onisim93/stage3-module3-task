@@ -21,4 +21,8 @@ public class TagModel extends BaseEntity{
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
     private List<NewsModel> news;
+
+    public TagModel(Long id) {
+        super(id);
+    }
 }
