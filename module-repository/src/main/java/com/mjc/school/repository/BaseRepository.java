@@ -5,7 +5,7 @@ import com.mjc.school.repository.model.BaseEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseRepository<E extends BaseEntity, K> {
+public interface BaseRepository<E extends BaseEntity<K>, K> {
     List<E> readAll();
 
     Optional<E> readById(K id);

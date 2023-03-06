@@ -3,20 +3,22 @@ package com.mjc.school.repository.impl;
 import com.mjc.school.repository.BaseRepository;
 import com.mjc.school.repository.model.AuthorModel;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional(readOnly = true)
 public class AuthorRepository implements BaseRepository<AuthorModel, Long> {
 
-    @PersistenceContext
     private EntityManager em;
 
+    @PersistenceUnit
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+        this.em = entityManagerFactory.createEntityManager();
+    }
 
     @Override
     public List<AuthorModel> readAll() {
@@ -30,30 +32,33 @@ public class AuthorRepository implements BaseRepository<AuthorModel, Long> {
     }
 
     @Override
-    @Transactional
     public AuthorModel create(AuthorModel entity) {
+        em.getTransaction().begin();
         em.persist(entity);
+        em.getTransaction().commit();
         return entity;
     }
 
     @Override
-    @Transactional
     public AuthorModel update(AuthorModel entity) {
         if (!existById(entity.getId())) {
             return null;
         }
+        em.getTransaction().begin();
         AuthorModel model = em.getReference(AuthorModel.class, entity.getId());
         model.setName(entity.getName());
-        em.flush();
+        em.getTransaction().commit();
         return model;
     }
 
     @Override
-    @Transactional
     public boolean deleteById(Long id) {
-        return em.createQuery("delete from AuthorModel a where a.id=:id")
+        em.getTransaction().begin();
+        boolean result = em.createQuery("delete from AuthorModel a where a.id=:id")
                 .setParameter("id", id)
                 .executeUpdate() != 0;
+        em.getTransaction().commit();
+        return result;
     }
 
     @Override

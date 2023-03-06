@@ -12,7 +12,6 @@ import com.mjc.school.service.mapper.NewsMapper;
 import com.mjc.school.repository.model.NewsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -80,7 +79,6 @@ public class NewsService implements BaseService<NewsDto, Long> {
     }
 
     @Override
-    @Transactional
     @EntityValidate
     public NewsDto create(NewsDto createRequest) {
         isTagsExists(createRequest.getTagList());
@@ -89,7 +87,6 @@ public class NewsService implements BaseService<NewsDto, Long> {
     }
 
     @Override
-    @Transactional
     @EntityValidate
     public NewsDto update(NewsDto updateRequest) {
         isTagsExists(updateRequest.getTagList());
@@ -98,7 +95,6 @@ public class NewsService implements BaseService<NewsDto, Long> {
     }
 
     @Override
-    @Transactional
     public boolean deleteById(Long id) {
         return repository.deleteById(id);
     }

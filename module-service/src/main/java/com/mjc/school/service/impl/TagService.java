@@ -8,9 +8,7 @@ import com.mjc.school.service.dto.TagDto;
 import com.mjc.school.repository.model.TagModel;
 import com.mjc.school.service.exception.NoSuchEntityException;
 import com.mjc.school.service.exception.ServiceErrorCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import static com.mjc.school.service.mapper.TagMapper.INSTANCE;
@@ -46,7 +44,6 @@ public class TagService implements BaseService<TagDto, Long> {
 
 
     @Override
-    @Transactional
     @EntityValidate
     public TagDto create(TagDto createRequest) {
         TagModel model = INSTANCE.toModel(createRequest);
@@ -54,7 +51,6 @@ public class TagService implements BaseService<TagDto, Long> {
     }
 
     @Override
-    @Transactional
     @EntityValidate
     public TagDto update(TagDto updateRequest) {
         TagModel model = INSTANCE.toModel(updateRequest);
@@ -62,7 +58,6 @@ public class TagService implements BaseService<TagDto, Long> {
     }
 
     @Override
-    @Transactional
     public boolean deleteById(Long id) {
         return repository.deleteById(id);
     }

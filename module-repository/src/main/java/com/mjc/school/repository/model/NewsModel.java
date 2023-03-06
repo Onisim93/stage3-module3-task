@@ -1,8 +1,6 @@
 package com.mjc.school.repository.model;
 
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,9 +15,14 @@ import java.util.List;
 @Setter
 @Getter
 @Table(name = "news")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @EntityListeners(value = AuditingEntityListener.class)
-public class NewsModel extends BaseEntity{
+public class NewsModel implements BaseEntity<Long>{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     private String title;
     private String content;
@@ -28,8 +31,7 @@ public class NewsModel extends BaseEntity{
     @LastModifiedDate
     private LocalDateTime lastUpdateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AuthorModel author;
 
     @ManyToMany(fetch = FetchType.LAZY)

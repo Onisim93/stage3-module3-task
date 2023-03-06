@@ -5,7 +5,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -13,9 +12,14 @@ import java.util.Set;
 @Setter
 @Getter
 @Table(name = "tag")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @EntityListeners(value = AuditingEntityListener.class)
-public class TagModel extends BaseEntity{
+public class TagModel implements BaseEntity<Long>{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    protected Long id;
 
     private String name;
 
@@ -23,6 +27,6 @@ public class TagModel extends BaseEntity{
     private List<NewsModel> news;
 
     public TagModel(Long id) {
-        super(id);
+        this.id = id;
     }
 }

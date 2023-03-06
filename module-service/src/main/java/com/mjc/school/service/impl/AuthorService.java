@@ -8,9 +8,7 @@ import com.mjc.school.service.dto.AuthorDto;
 import com.mjc.school.repository.model.AuthorModel;
 import com.mjc.school.service.exception.NoSuchEntityException;
 import com.mjc.school.service.exception.ServiceErrorCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,7 +44,6 @@ public class AuthorService implements BaseService<AuthorDto, Long> {
     }
 
     @Override
-    @Transactional
     @EntityValidate
     public AuthorDto create(AuthorDto createRequest) {
         AuthorModel model = INSTANCE.toModel(createRequest);
@@ -55,7 +52,6 @@ public class AuthorService implements BaseService<AuthorDto, Long> {
     }
 
     @Override
-    @Transactional
     @EntityValidate
     public AuthorDto update(AuthorDto updateRequest) {
         AuthorModel model = INSTANCE.toModel(updateRequest);
@@ -63,7 +59,6 @@ public class AuthorService implements BaseService<AuthorDto, Long> {
     }
 
     @Override
-    @Transactional
     public boolean deleteById(Long id) {
         return repository.deleteById(id);
     }

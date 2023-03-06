@@ -3,19 +3,22 @@ package com.mjc.school.repository.impl;
 import com.mjc.school.repository.BaseRepository;
 import com.mjc.school.repository.model.TagModel;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional(readOnly = true)
 public class TagRepository implements BaseRepository<TagModel, Long> {
 
-    @PersistenceContext
     private EntityManager em;
+
+    @PersistenceUnit
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+        this.em = entityManagerFactory.createEntityManager();
+    }
 
     @Override
     public List<TagModel> readAll() {
@@ -27,29 +30,33 @@ public class TagRepository implements BaseRepository<TagModel, Long> {
         return Optional.ofNullable(em.find(TagModel.class, id));
     }
 
-    @Transactional
     @Override
     public TagModel create(TagModel entity) {
+        em.getTransaction().begin();
         em.persist(entity);
+        em.getTransaction().commit();
         return entity;
     }
 
-    @Transactional
     @Override
     public TagModel update(TagModel entity) {
         if (existById(entity.getId())) {
+            em.getTransaction().begin();
             em.merge(entity);
+            em.getTransaction().commit();
             return entity;
         }
         return null;
     }
 
-    @Transactional
     @Override
     public boolean deleteById(Long id) {
-        return em.createQuery("delete from TagModel t where t.id=:id")
+        em.getTransaction().begin();
+        boolean result = em.createQuery("delete from TagModel t where t.id=:id")
                 .setParameter("id", id)
                 .executeUpdate() != 0;
+        em.getTransaction().commit();
+        return result;
     }
 
     @Override
