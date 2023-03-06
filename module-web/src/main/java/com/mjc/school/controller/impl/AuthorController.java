@@ -1,6 +1,7 @@
 package com.mjc.school.controller.impl;
 
 import com.mjc.school.controller.BaseController;
+import com.mjc.school.service.BaseService;
 import com.mjc.school.service.dto.AuthorDto;
 import com.mjc.school.service.impl.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,10 @@ import java.util.List;
 
 @Controller
 public class AuthorController implements BaseController<AuthorDto, Long> {
-    private final AuthorService service;
+    private final BaseService<AuthorDto, Long> service;
 
     @Autowired
-    public AuthorController(AuthorService service) {
+    public AuthorController(BaseService<AuthorDto, Long> service) {
         this.service = service;
     }
 
@@ -28,7 +29,7 @@ public class AuthorController implements BaseController<AuthorDto, Long> {
     }
 
     public AuthorDto readByNewsId(Long newsId) {
-        return service.readByNewsId(newsId);
+        return ((AuthorService) service).readByNewsId(newsId);
     }
 
     @Override
